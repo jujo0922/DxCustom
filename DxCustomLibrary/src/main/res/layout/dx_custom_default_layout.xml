@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="bottom"
+    android:orientation="vertical"
+    android:background="@drawable/dx_transparent_default_background"
+    tools:background="@color/black"
+    android:id="@+id/parentDxCustomLayout"
+    android:visibility="gone"
+    tools:visibility="visible"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:id="@+id/parte_de_abajo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="0dp"
+            android:background="@drawable/dx_default_header_background"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:id="@+id/tituloDxCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/dx_default_header_background"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_horizontal"
+                android:paddingVertical="10dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dx_title_text_size"
+                android:textStyle="bold"
+                tools:text="Sin titulo" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginHorizontal="20dp"
+                android:background="#C6C6C6"/>
+
+            <TextView
+                android:id="@+id/mensajeDxCustom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@color/white"
+                android:fontFamily="@font/roboto"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                android:textSize="@dimen/dx_message_text_size"
+                tools:text="Sin mensaje"
+                android:visibility="visible"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="20dp"
+                />
+
+            <LinearLayout
+                android:id="@+id/customViewLinearLayoutDxCustomUp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:elevation="0dp"
+                    android:fontFamily="@font/roboto"
+                    tools:text="Text button"
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/white"
+                    android:visibility="gone"
+                    />
+
+                <Button
+                    android:id="@+id/acceptButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/roboto"
+                    android:stateListAnimator="@null"
+                    android:textColor="@color/white"
+                    tools:text="Text button"
+                    android:visibility="gone"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/customViewLinearLayoutDxCustomDown"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/parte_de_abajo"
+            android:layout_marginBottom="-35dp">
+
+            <FrameLayout
+                android:id="@+id/circulo_de_icono"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center_horizontal">
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/dx_default_icon_shape"/>
+
+                <ImageView
+                    android:id="@+id/iconDxCustom"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="10dp"
+                    android:src="@drawable/dx_default_icon" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+    </RelativeLayout>
+
+</LinearLayout>
