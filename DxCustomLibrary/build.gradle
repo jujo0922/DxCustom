@@ -14,8 +14,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
 
-        versionCode 5
-        versionName "2.3"
+        versionCode 6
+        versionName "2.4"
         
     }
 

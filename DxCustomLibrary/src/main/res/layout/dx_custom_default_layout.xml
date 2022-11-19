@@ -87,6 +87,7 @@
                     android:stateListAnimator="@null"
                     android:textColor="@color/white_dx"
                     android:visibility="gone"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     />
 
                 <Button
@@ -101,6 +102,7 @@
                     android:textColor="@color/white_dx"
                     tools:text="Text button"
                     android:visibility="gone"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
                     />
 
             </LinearLayout>

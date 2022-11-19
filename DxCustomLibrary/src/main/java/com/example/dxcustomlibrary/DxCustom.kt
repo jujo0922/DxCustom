@@ -601,16 +601,11 @@ class DxCustom(
 
         try{
 
-            val action = {
-                setDataOnDialog()
-                animateDialogOnShow()
+            setDataOnDialog()
+            animateDialogOnShow()
 
-                dialog.show()
-            }
+            dialog.show()
 
-            Handler(Looper.getMainLooper()).post(
-                action
-            )
 
         }catch (e: Exception){
 
@@ -630,15 +625,10 @@ class DxCustom(
 
         try{
 
-            val action = {
-                setDataOnDialog()
-                animateDialogOnShow()
-                dialog.show()
-            }
+            setDataOnDialog()
+            animateDialogOnShow()
+            dialog.show()
 
-            Handler(Looper.getMainLooper()).post(
-                action
-            )
 
         }catch (e: Exception){
 
