@@ -15,7 +15,7 @@ android {
         consumerProguardFiles "consumer-rules.pro"
 
         versionCode 5
-        versionName "2.1"
+        versionName "2.3"
         
     }
 
