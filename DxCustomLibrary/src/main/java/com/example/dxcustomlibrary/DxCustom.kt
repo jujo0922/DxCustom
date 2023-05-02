@@ -1,5 +1,3 @@
-package com.example.dxcustomlibrary
-
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
@@ -7,6 +5,7 @@ import android.content.res.XmlResourceParser
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
@@ -17,18 +16,18 @@ import android.view.View.VISIBLE
 import android.widget.*
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
+import com.example.dxcustomlibrary.R
+import com.example.dxcustomlibrary.visible
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.snackbar.Snackbar
 
 /*
-
             ██████╗░██╗░░██╗░█████╗░██╗░░░██╗░██████╗████████╗░█████╗░███╗░░░███╗
             ██╔══██╗╚██╗██╔╝██╔══██╗██║░░░██║██╔════╝╚══██╔══╝██╔══██╗████╗░████║
             ██║░░██║░╚███╔╝░██║░░╚═╝██║░░░██║╚█████╗░░░░██║░░░██║░░██║██╔████╔██║
             ██║░░██║░██╔██╗░██║░░██╗██║░░░██║░╚═══██╗░░░██║░░░██║░░██║██║╚██╔╝██║
             ██████╔╝██╔╝╚██╗╚█████╔╝╚██████╔╝██████╔╝░░░██║░░░╚█████╔╝██║░╚═╝░██║
             ╚═════╝░╚═╝░░╚═╝░╚════╝░░╚═════╝░╚═════╝░░░░╚═╝░░░░╚════╝░╚═╝░░░░░╚═╝
-
  */
 /**
  * @author Julio Landazuri Diaz
@@ -40,7 +39,6 @@ import com.google.android.material.snackbar.Snackbar
  *                   ¡Y loaders ╰(*°▽°*)╯!
  */
 /* ------- Ejemplo de uso CREATEDIALOG -------
-
         DxCustom(this@LoginActivity)
                 .createDialog()
                 .setTitulo("Titulo", context.getColor(R.color.dxCustom), 5f)
@@ -59,18 +57,13 @@ import com.google.android.material.snackbar.Snackbar
                 }
                 .addCustomView(bindingCustomView.root)
                 .showDialog()
-
-
   ------- Ejemplo de uso CREATENOTIFICATION -------
-
         DxCustom(context).createNotification(parentView,
             "Mensaje de ejemplo",
             backgroundColor = context.getColor(R.color.lightGreen),
             strokeColor = context.getColor(R.color.red),
         )
-
   ------- Ejemplo de uso CREATELOADING -------
-
         DxCustom(context).createLoading(
             R.raw.anim,
             "Cargando...",
@@ -79,19 +72,15 @@ import com.google.android.material.snackbar.Snackbar
             -10,
             false
         )
-
  */
 const val DELAY_TIME = 500L
 const val ERROR_TAG = "DxCustom"
 class DxCustom(
-    private val context: Context
+    private val context: Context? = null
 ) {
     /* ------- Ojo con las IDs!! -------
-
         Para que DxCustom funcione correctamente, se deben respetar las IDs de los elementos del XML.
-
         Para ver las IDs que se usan ver la funcion ->       loadLayoutComponentes()
-
     */
 
     //DxCustom AppCompat
@@ -151,87 +140,74 @@ class DxCustom(
         mensajeSize: Float = 19f,
         startLottieFrame: Int = 0,
         autoPlayLottie: Boolean = true,
-        loopLottie: Boolean = true,
-        soloAnimacion : Boolean = false
-    ): Dialog{
+        loopLottie: Boolean = true
+    ) {
 
-        dialog = Dialog(context, R.style.DxCustom)
+        dialog =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Dialog(context!!, R.style.DxCustomBlured)
+        }else{
+            Dialog(context!!, R.style.DxCustom)
+        }
+
         val inflater = LayoutInflater.from(context)
 
         try{
 
-            val dialogView: View = inflater.inflate(R.layout.dx_custom_default_layout_loading, null)
+            val dialogView: View = inflater.inflate(R.layout.dx_custom_default_layout_loading_original, null)
 
             with(dialogView){
 
                 val cardViewLayoutLoading = findViewById<MaterialCardView>(R.id.cardViewLayoutLoading)
-                val animationViewOnly = findViewById<LottieAnimationView>(R.id.animationViewOnly)
 
-                if(soloAnimacion){
 
-                    cardViewLayoutLoading.visibility = GONE
-                    animationViewOnly.visibility = VISIBLE
-                    animationViewOnly.setAnimation(lottie)
-                    animationViewOnly.frame = startLottieFrame
+                cardViewLayoutLoading.visibility = VISIBLE
 
-                    if(autoPlayLottie)
-                        animationViewOnly.playAnimation()
+                val lottieLinearLayoutLoading = findViewById<LinearLayout>(R.id.lottieLinearLayoutLoading)
+                val tituloMensajeLayout = findViewById<LinearLayout>(R.id.tituloMensajeLayoutLoading)
+                val tituloLayout = findViewById<TextView>(R.id.tituloDxCustomLoading)
+                val mensajeLayout = findViewById<TextView>(R.id.mensajeDxCustomLoading)
 
-                    animationViewOnly.loop(loopLottie)
+                val lottieLayout = findViewById<LottieAnimationView>(R.id.animationView)
 
-                }else{
+                val paramsLottie = lottieLinearLayoutLoading.layoutParams as RelativeLayout.LayoutParams
+                paramsLottie.setMargins(0, lottieMarginTop, 0, 0)
 
-                    cardViewLayoutLoading.visibility = VISIBLE
-                    animationViewOnly.visibility = GONE
+                val params = tituloMensajeLayout.layoutParams as RelativeLayout.LayoutParams
+                params.setMargins(0, textoMarginTop, 0, 0)
+                tituloMensajeLayout.layoutParams = params
 
-                    val lottieLinearLayoutLoading = findViewById<LinearLayout>(R.id.lottieLinearLayoutLoading)
-                    val tituloMensajeLayout = findViewById<LinearLayout>(R.id.tituloMensajeLayoutLoading)
-                    val tituloLayout = findViewById<TextView>(R.id.tituloDxCustomLoading)
-                    val mensajeLayout = findViewById<TextView>(R.id.mensajeDxCustomLoading)
+                lottieLayout.setAnimation(lottie)
 
-                    val lottieLayout = findViewById<LottieAnimationView>(R.id.animationView)
+                tituloLayout.setTextColor(tituloColor)
+                tituloLayout.textSize = tituloSize
+                mensajeLayout.setTextColor(mensajeColor)
+                mensajeLayout.textSize = mensajeSize
 
-                    val paramsLottie = lottieLinearLayoutLoading.layoutParams as RelativeLayout.LayoutParams
-                    paramsLottie.setMargins(0, lottieMarginTop, 0, 0)
+                tituloLayout.text = titulo
+                mensajeLayout.text = mensaje
 
-                    val params = tituloMensajeLayout.layoutParams as RelativeLayout.LayoutParams
-                    params.setMargins(0, textoMarginTop, 0, 0)
-                    tituloMensajeLayout.layoutParams = params
+                if(autoPlayLottie)
+                    lottieLayout.playAnimation()
 
-                    lottieLayout.setAnimation(lottie)
-
-                    tituloLayout.setTextColor(tituloColor)
-                    tituloLayout.textSize = tituloSize
-                    mensajeLayout.setTextColor(mensajeColor)
-                    mensajeLayout.textSize = mensajeSize
-
-                    tituloLayout.text = titulo
-                    mensajeLayout.text = mensaje
-
-                    if(autoPlayLottie)
-                        lottieLayout.playAnimation()
-
-                    lottieLayout.loop(loopLottie)
-                    lottieLayout.frame = startLottieFrame
-
-                }
+                lottieLayout.loop(loopLottie)
+                lottieLayout.frame = startLottieFrame
 
             }
+
+            dialog.setContentView(dialogView)
 
             dialog.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,
                 WindowManager.LayoutParams.MATCH_PARENT)
 
-            dialog.setContentView(dialogView)
-
             dialog.setCancelable(false)
 
-            dialog.show()
+            DxCustomLoader.displayLoader(dialog)
+
         }catch (e: Exception){
 
             Log.e(ERROR_TAG, e.printStackTrace().toString())
         }
 
-        return dialog
     }
 
     /**
@@ -285,7 +261,12 @@ class DxCustom(
      *
      * @return DxCustom
      */
-    fun createDialog(fullScreen: Boolean = false, animarAlSalir: Boolean = true, animarAlEsconder: Boolean = true, gravity: Int = selectedGravity): DxCustom {
+    fun createDialog(
+        fullScreen: Boolean = false,
+        animarAlSalir: Boolean = true,
+        animarAlEsconder: Boolean = true,
+        gravity: Int = selectedGravity
+    ): DxCustom {
 
         verificarExistenciaDeRecursos()
 
@@ -294,8 +275,11 @@ class DxCustom(
 
         selectedGravity = gravity
 
-        //Este estilo puede cambiar dependiendo del proyecto
-        dialog = Dialog(context, R.style.DxCustom)
+        dialog =  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            Dialog(context!!, R.style.DxCustomBlured)
+        }else{
+            Dialog(context!!, R.style.DxCustom)
+        }
 
         val inflater = LayoutInflater.from(context)
 
@@ -399,13 +383,16 @@ class DxCustom(
      *
      * @return DxCustom
      */
-    fun setIcono(icono: Drawable? = iconoDxCustom, color: Int? = context.resources.getColor(R.color.colorPrimary, null)): DxCustom {
+    fun setIcono(
+        icono: Drawable? = iconoDxCustom,
+        color: Int? = context!!.resources.getColor(R.color.colorPrimary, null)
+    ): DxCustom {
 
         icono?.let {
             iconoDxCustom = icono
         }?:run{
 
-            Log.i(ERROR_TAG, "El icono proporcionado no es valido, se omitirá el icono.")
+            Log.e(ERROR_TAG, "El icono proporcionado no es valido, se omitirá el icono.")
 
             iconoDxCustomLayout?.visibility = GONE
         }
@@ -452,8 +439,8 @@ class DxCustom(
      */
     fun showAceptarButton(
         texto: String? = "Aceptar",
-        color: Int = context.resources.getColor(R.color.colorPrimary, null),
-        textColor:  Int = context.resources.getColor(R.color.colorPrimary, null),
+        color: Int = context!!.resources.getColor(R.color.colorPrimary, null),
+        textColor:  Int = context!!.resources.getColor(R.color.colorPrimary, null),
         textAllCaps: Boolean = true,
         onAccept: () -> Unit): DxCustom {
 
@@ -508,9 +495,10 @@ class DxCustom(
      */
     fun showCancelarButton(
         texto: String? = "Cancelar",
-        strokecolor:  Int = context.resources.getColor(R.color.colorPrimary, null),
-        textColor:  Int = context.resources.getColor(R.color.colorPrimary, null),
+        strokecolor:  Int = context!!.resources.getColor(R.color.colorPrimary, null),
+        textColor:  Int = context!!.resources.getColor(R.color.colorPrimary, null),
         textAllCaps: Boolean = true,
+        textSize: Float = 16f,
         onCancel: () -> Unit
     ): DxCustom {
 
@@ -585,15 +573,24 @@ class DxCustom(
             }
         }
 
-        parentCustomView?.addView(customView) ?:run{
-            throwNullPointerException("Error al crear customView.")
+        try{
+            parentCustomView?.addView(customView) ?:run{
+                throwNullPointerException("Error al crear customView.")
+            }
+        }catch (e: Exception){
+
+            Log.e("DxCustom", "#######################################################################################")
+            Log.e("DxCustom", "# LA VISTA QUE SE ESTÁ INTENTADO AGREGAR YA SE ENCUENTRA VISIBLE EN OTRA VISTA PADRE. #")
+            Log.e("DxCustom", "#                       ASEGURATE DE QUE LA VISTA ES HUÉRFANA                         #")
+            Log.e("DxCustom", "#######################################################################################")
+
         }
 
         return this
     }
 
     /**
-     * Ejecuta el dialogo.
+     * Muestra el dialogo y NO lleva un control sobobre los dialogos que se muestran en pantalla.
      *
      * @return Dialog
      */
@@ -617,11 +614,35 @@ class DxCustom(
     }
 
     /**
-     * Ejecuta el dialogo.
+     * Muestra el dialog y lleva un control sobre los dialogos que se muestran en pantalla para evitar repeticiones del mismo.
      *
      * @return DxCustom
      */
     fun showDialogReturnDxCustom(): DxCustom{
+
+        try{
+
+            DxCustomSingle.addDxCustom(this) {
+                setDataOnDialog()
+                animateDialogOnShow()
+                dialog.show()
+            }
+
+        }catch (e: Exception){
+
+            Log.e(ERROR_TAG, e.printStackTrace().toString())
+
+        }
+
+        return this
+    }
+
+    /**
+     * * Muestra el dialogo y NO lleva un control sobobre los dialogos que se muestran en pantalla.
+     *
+     * @return DxCustom
+     */
+    fun showDialogReturnDxCustomNoControl(): DxCustom{
 
         try{
 
@@ -646,6 +667,13 @@ class DxCustom(
 
         animateDialogOnHide()
 
+    }
+
+    /**
+     * Oculta el loader.
+     */
+    fun dimissLoader(){
+        DxCustomLoader.dimissLoader()
     }
 
     private fun loadLayoutComponentes(){
@@ -678,7 +706,14 @@ class DxCustom(
             textView.text = tituloDxCustom
 
         }?:run{
-            throwNullPointerException("No se encontro: tituloDxCustomLayout.")
+
+            dialog.window?.findViewById<TextView>(R.id.tituloDxCustomLoading)?.let {
+                it.text = tituloDxCustom
+            }?:run{
+
+                throwNullPointerException("No se encontro: tituloDxCustomLayout ó tituloDxCustomLoading.")
+            }
+
         }
 
 
@@ -692,7 +727,14 @@ class DxCustom(
             textView.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
 
         }?:run{
-            throwNullPointerException("No se encontro: mensajeDxCustomLayout.")
+
+            dialog.window?.findViewById<TextView>(R.id.mensajeDxCustomLoading)?.let {
+                it.text = Html.fromHtml(mensajeDxCustom, Html.FROM_HTML_MODE_COMPACT)
+            }?:run{
+
+                throwNullPointerException("No se encontro: mensajeDxCustomLayout ó mensajeDxCustomLoading.")
+            }
+
         }
 
 
@@ -756,6 +798,7 @@ class DxCustom(
      */
     private fun animateDialogOnShowBottom(){
         if(animarAlSalir){
+
             parentDxCustomLayout?.let {
 
                 it.measure(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -791,18 +834,25 @@ class DxCustom(
      */
     private fun animateDialogOnHide() {
 
-        if (animarAlEsconder){
+        try{
 
-            when(selectedGravity){
-                Gravity.CENTER -> {animateDialogOnHideCenter()}
-                Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+            DxCustomSingle.removeDxCustom(this){
+                if (animarAlEsconder){
+
+                    when(selectedGravity){
+                        Gravity.CENTER -> {animateDialogOnHideCenter()}
+                        Gravity.BOTTOM -> {animateDialogOnHideBottom()}
+                    }
+
+                }else{
+
+                    dialog.dismiss()
+                }
             }
 
-        }else{
-
-            dialog.dismiss()
+        }catch (e: Exception){
+            Log.w(ERROR_TAG, "Error al cerrar el dialogo, puede que ya haya sido cerrado por la muerte de una actividad.")
         }
-
 
     }
 
@@ -815,7 +865,6 @@ class DxCustom(
             ?:run{
                 throwNullPointerException("No se encontro: parentDxCustomLayout.")
             }
-
 
         Handler(Looper.getMainLooper()).postDelayed({
 
@@ -834,7 +883,6 @@ class DxCustom(
                 throwNullPointerException("No se encontro: parentDxCustomLayout.")
             }
 
-
         Handler(Looper.getMainLooper()).postDelayed({
 
             dialog.dismiss()
@@ -849,7 +897,7 @@ class DxCustom(
 
         try{
 
-            iconoDxCustom = ContextCompat.getDrawable(context, R.drawable.dx_default_icon)
+            iconoDxCustom = ContextCompat.getDrawable(context!!, R.drawable.dx_default_icon)
 
         }catch (e: Exception){
             Log.e(ERROR_TAG, e.printStackTrace().toString())
@@ -857,8 +905,8 @@ class DxCustom(
 
         try {
 
-            layoutDxCustomPersonalizadoBottom = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout)
-            layoutDxCustomPersonalizadoCenter = context.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout_center)
+            layoutDxCustomPersonalizadoBottom = context!!.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout_original)
+            layoutDxCustomPersonalizadoCenter = context!!.applicationContext.resources.getLayout(R.layout.dx_custom_default_layout_center_original)
 
         }catch (e: Exception){
             Log.e(ERROR_TAG, e.printStackTrace().toString())
@@ -902,6 +950,139 @@ class DxCustom(
     @Throws(NullPointerException::class)
     fun throwNullPointerException(mensaje: String = "Error no definido") {
         throw NullPointerException(mensaje)
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DxCustom
+
+        if (tituloDxCustom != other.tituloDxCustom) return false
+        if (mensajeDxCustom != other.mensajeDxCustom) return false
+        if (tituloColor != other.tituloColor) return false
+        if (mensajeColor != other.mensajeColor) return false
+        if (iconoColor != other.iconoColor) return false
+        if (tituloSp != other.tituloSp) return false
+        if (mensajeSp != other.mensajeSp) return false
+        if (selectedGravity != other.selectedGravity) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = tituloDxCustom.hashCode()
+        result = 31 * result + mensajeDxCustom.hashCode()
+        result = 31 * result + (tituloColor ?: 0)
+        result = 31 * result + (mensajeColor ?: 0)
+        result = 31 * result + (iconoColor ?: 0)
+        result = 31 * result + (tituloSp?.hashCode() ?: 0)
+        result = 31 * result + (mensajeSp?.hashCode() ?: 0)
+        result = 31 * result + selectedGravity
+        return result
+    }
+
+    override fun toString(): String {
+
+        val gravity = when(selectedGravity){
+            17 -> "Gravity.CENTER"
+            80 -> "Gravity.BOTTOM"
+            else -> "NONE"
+        }
+
+        return " \n Titulo='$tituloDxCustom' \n Gravity='$gravity' \n Mensaje='$mensajeDxCustom'"
+    }
+
+
+}
+
+/**
+ * Clase para lelvar el control de los DxCustom que se muestran en pantalla.
+ */
+private object DxCustomSingle{
+
+    /**
+     * Variable para guardar los DxCustom que se visualizan.
+     */
+    private var dxCustomSingleList: MutableList<DxCustom> = mutableListOf()
+
+    /**
+     * Metodo que agrega el DxCustom a la lista si no lo contiene, si este DxCustom ya se muestra en pantalla, imprimirá por consola un mensaje.
+     *
+     * @param dxCustom Instancia de DxCustom a controlar.
+     * @param actionOnAdd Accion que se ejecuta al comprobar que no existe, es de uso interno a la libreria.
+     */
+    fun addDxCustom(dxCustom:DxCustom, actionOnAdd: () -> Unit){
+
+        if(!dxCustomSingleList.contains(dxCustom)){
+            dxCustomSingleList.add(dxCustom)
+            actionOnAdd.invoke()
+        }else{
+            Log.e("DxCustom", "####################################################################################")
+            Log.e("DxCustom", "# Imposible mostrar un DxCustom, ya se está mostrando uno con información similar. #")
+            Log.e("DxCustom", "####################################################################################")
+            Log.e("DxCustom", "--------------------------- DATOS DEL DXCUSTOM OMITIDO: ----------------------------")
+            Log.e("DxCustom", "$dxCustom")
+            Log.e("DxCustom", "------------------------------------------------------------------------------------")
+
+        }
+
+    }
+
+    /**
+     * Metodo que elimina el DxCustom a la lista si lo contiene.
+     *
+     * @param dxCustom Instancia de DxCustom a controlar.
+     * @param actionOnRemove Accion que se ejecuta al comprobar que existe, es de uso interno a la libreria.
+     */
+    fun removeDxCustom(dxCustom: DxCustom, actionOnRemove: () -> Unit){
+        if(dxCustomSingleList.contains(dxCustom)){
+            dxCustomSingleList.remove(dxCustom)
+        }else{
+            Log.e("DxCustom", "#################################################")
+            Log.e("DxCustom", "# Imposible eliminar un DxCustom no controlado. #")
+            Log.e("DxCustom", "#################################################")
+        }
+
+        actionOnRemove.invoke()
+    }
+}
+
+private object DxCustomLoader{
+
+    private var loader: Dialog? = null
+
+    fun displayLoader(dialog: Dialog){
+
+        try{
+
+            loader?.let{
+                Log.e("DxCustomLoader", "Ya existe un loader.")
+            }?:run{
+                dialog.apply {
+                    loader = this
+                    show()
+                }
+            }
+        }catch (e: Exception){
+            Log.e("DxCustomLoader", e.printStackTrace().toString())
+        }
+
+
+    }
+
+    fun dimissLoader(){
+
+        try{
+            loader?.let{
+                loader?.dismiss()
+                loader = null
+            }?:run{
+                Log.e("DxCustomLoader", "No existe un loader.")
+            }
+        }catch (e: Exception){
+            Log.e("DxCustomLoader", e.printStackTrace().toString())
+        }
     }
 
 }
