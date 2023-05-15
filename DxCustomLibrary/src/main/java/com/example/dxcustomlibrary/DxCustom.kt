@@ -14,6 +14,7 @@ import android.view.*
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.example.dxcustomlibrary.R
@@ -136,6 +137,8 @@ class DxCustom(
         lottieMarginTop: Int = 0,
         tituloColor: Int = -16777216,
         mensajeColor: Int = -16777216,
+        backgroundColor: Int = -16777216,
+        dividerColor: Int = -16777216,
         tituloSize: Float = 19f,
         mensajeSize: Float = 19f,
         startLottieFrame: Int = 0,
@@ -158,7 +161,10 @@ class DxCustom(
             with(dialogView){
 
                 val cardViewLayoutLoading = findViewById<MaterialCardView>(R.id.cardViewLayoutLoading)
+                val divider = findViewById<View>(R.id.dividerColorDxCustomLoading)
 
+                cardViewLayoutLoading.setCardBackgroundColor(backgroundColor)
+                divider.setBackgroundColor(dividerColor)
 
                 cardViewLayoutLoading.visibility = VISIBLE
 
@@ -265,6 +271,8 @@ class DxCustom(
         fullScreen: Boolean = false,
         animarAlSalir: Boolean = true,
         animarAlEsconder: Boolean = true,
+        backgroundColor: Int? = null,
+        dividerColor: Int? = null,
         gravity: Int = selectedGravity
     ): DxCustom {
 
@@ -287,8 +295,27 @@ class DxCustom(
             var dialogView: View? = null
 
             when(selectedGravity){
-                Gravity.CENTER -> dialogView = inflater.inflate(layoutDxCustomPersonalizadoCenter, null)
-                Gravity.BOTTOM -> dialogView = inflater.inflate(layoutDxCustomPersonalizadoBottom, null)
+                Gravity.CENTER -> {
+                    dialogView = inflater.inflate(layoutDxCustomPersonalizadoCenter, null)
+                    backgroundColor?.let {color ->
+                        dialogView?.findViewById<CardView>(R.id.cardViewCenter)?.setCardBackgroundColor(color)
+                    }
+
+                    dividerColor?.let{
+                        dialogView?.findViewById<View>(R.id.dividerDxCustom)?.setBackgroundColor(it)
+                    }
+
+                }
+                Gravity.BOTTOM -> {
+                    dialogView = inflater.inflate(layoutDxCustomPersonalizadoBottom, null)
+                    backgroundColor?.let{ color ->
+                        dialogView?.findViewById<LinearLayout>(R.id.parte_de_abajo)?.backgroundTintList = ColorStateList.valueOf(color)
+                        dialogView?.findViewById<View>(R.id.circulo_de_icono_fondo)?.backgroundTintList = ColorStateList.valueOf(color)
+                    }
+                    dividerColor?.let{
+                        dialogView?.findViewById<View>(R.id.lineaDxCustom)?.setBackgroundColor(it)
+                    }
+                }
             }
 
             dialogView?.let{

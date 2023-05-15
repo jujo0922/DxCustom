@@ -45,7 +45,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/dx_default_header_background"
                     android:fontFamily="@font/roboto"
                     android:gravity="center_horizontal"
                     android:paddingVertical="10dp"
@@ -55,6 +54,7 @@
                     tools:text="Sin titulo" />
 
                 <View
+                    android:id="@+id/lineaDxCustom"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginHorizontal="20dp"
@@ -137,6 +137,7 @@
                     android:layout_gravity="center_horizontal">
 
                     <View
+                        android:id="@+id/circulo_de_icono_fondo"
                         android:layout_width="70dp"
                         android:layout_height="45dp"
                         android:layout_gravity="center_horizontal"

@@ -30,7 +30,7 @@
             android:id="@+id/cardViewLayoutLoading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/dx_default_center_background"
+            app:cardBackgroundColor="@color/white"
             android:layout_marginHorizontal="50dp"
             android:layout_marginVertical="100dp"
             app:cardCornerRadius="30dp"
@@ -65,6 +65,7 @@
                         tools:text="Sin titulo" />
 
                     <View
+                        android:id="@+id/dividerColorDxCustomLoading"
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
                         android:layout_marginHorizontal="20dp"

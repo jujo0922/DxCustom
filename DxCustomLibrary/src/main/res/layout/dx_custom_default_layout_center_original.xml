@@ -27,9 +27,9 @@
         >
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardViewCenter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/dx_default_center_background"
             android:layout_marginHorizontal="50dp"
             app:cardCornerRadius="20dp"
             android:layout_marginVertical="100dp">
@@ -54,7 +54,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:background="@drawable/dx_default_header_background"
                     android:fontFamily="@font/roboto"
                     android:gravity="center_horizontal"
                     android:paddingVertical="10dp"
@@ -64,6 +63,7 @@
                     tools:text="Sin titulo" />
 
                 <View
+                    android:id="@+id/dividerDxCustom"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     android:layout_marginHorizontal="20dp"
